@@ -3,6 +3,7 @@ package com.oci.ws.rest.springrest.controller;
 import java.net.URI;
 import java.util.List;
 
+import com.oci.ws.rest.springrest.controller.exception.UserNotFoundException;
 import com.oci.ws.rest.springrest.model.User;
 import com.oci.ws.rest.springrest.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -33,7 +34,7 @@ public class UserController
     {
         User user = repository.findOne(id);
         if (user == null) {
-            return ResponseEntity.notFound().build();
+            throw new UserNotFoundException(String.format("User with ud: %d was not found.", id));
         }
         return ResponseEntity.ok(user);
     }

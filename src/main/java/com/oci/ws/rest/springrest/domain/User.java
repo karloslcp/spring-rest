@@ -1,6 +1,8 @@
 package com.oci.ws.rest.springrest.domain;
 
 import java.time.LocalDate;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,5 +17,7 @@ public class User
 
     private LocalDate dateOfBirth;
 
+    @NotBlank(message = "Name attribute is missing")
+    @Size(min = 2)
     private String name;
 }

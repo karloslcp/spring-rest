@@ -2,6 +2,7 @@ package com.oci.ws.rest.springrest.resource;
 
 import java.net.URI;
 import java.util.List;
+import javax.validation.Valid;
 
 import com.oci.ws.rest.springrest.domain.User;
 import com.oci.ws.rest.springrest.service.UserService;
@@ -38,7 +39,7 @@ public class UserResource
     }
 
     @PostMapping
-    public ResponseEntity<Object> addUser(@RequestBody User user)
+    public ResponseEntity<Object> addUser(@Valid @RequestBody User user)
     {
         Integer newUserId = service.createUser(user);
         URI location = ServletUriComponentsBuilder

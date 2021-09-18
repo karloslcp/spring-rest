@@ -38,7 +38,7 @@ public class UserResource
     }
 
     @PostMapping
-    public ResponseEntity addUser(@RequestBody User user)
+    public ResponseEntity<Object> addUser(@RequestBody User user)
     {
         Integer newUserId = service.createUser(user);
         URI location = ServletUriComponentsBuilder
@@ -49,18 +49,17 @@ public class UserResource
         return ResponseEntity.created(location).build();
     }
 
+    // void returns http status 200 if not exception is thrown
     @PutMapping("{id}")
-    public ResponseEntity updateUser(@RequestBody User user, @PathVariable Integer id)
+    public void updateUser(@RequestBody User user, @PathVariable Integer id)
     {
         user.setId(id);
         service.updateUser(user);
-        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity deleteUser(@PathVariable Integer id)
+    public void deleteUser(@PathVariable Integer id)
     {
         service.deleteUser(id);
-        return ResponseEntity.ok().build();
     }
 }

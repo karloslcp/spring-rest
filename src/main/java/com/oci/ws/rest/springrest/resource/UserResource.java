@@ -4,9 +4,14 @@ import java.net.URI;
 import java.util.List;
 import javax.validation.Valid;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import com.oci.ws.rest.springrest.domain.User;
 import com.oci.ws.rest.springrest.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,16 +31,17 @@ public class UserResource
     private UserService service;
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers()
+    public List<User> getAllUsers()
     {
-        return ResponseEntity.ok(service.getAll());
+        return service.getAll();
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<User> getUser(@PathVariable Integer id)
+    public EntityModel<User> getUser(@PathVariable Integer id)
     {
+        Link linkToAllUsers = linkTo(methodOn(this.getClass()).getAllUsers()).withRel("all-users");
         User user = service.getUser(id);
-        return ResponseEntity.ok(user);
+        return EntityModel.of(user, linkToAllUsers);
     }
 
     @PostMapping

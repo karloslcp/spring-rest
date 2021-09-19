@@ -15,6 +15,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -64,5 +65,11 @@ public class UserResource
     public void updateUser(@Validated(UpdateUserInformation.class) @RequestBody User user)
     {
         service.updateUser(user);
+    }
+
+    @DeleteMapping("{id}")
+    public void deleteUser(@PathVariable Integer id)
+    {
+        service.deleteUser(id);
     }
 }

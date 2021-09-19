@@ -7,14 +7,18 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import com.oci.ws.rest.springrest.domain.User;
+import com.oci.ws.rest.springrest.resource.validation.CreateUserInformation;
+import com.oci.ws.rest.springrest.resource.validation.UpdateUserInformation;
 import com.oci.ws.rest.springrest.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,7 +47,7 @@ public class UserResource
     }
 
     @PostMapping
-    public ResponseEntity<Object> createUser(@RequestBody User user)
+    public ResponseEntity<Object> createUser(@Validated(CreateUserInformation.class) @RequestBody User user)
     {
         Integer newUserId = service.createUser(user);
 
@@ -54,5 +58,11 @@ public class UserResource
             .toUri();
 
         return ResponseEntity.created(location).build();
+    }
+
+    @PutMapping
+    public void updateUser(@Validated(UpdateUserInformation.class) @RequestBody User user)
+    {
+        service.updateUser(user);
     }
 }

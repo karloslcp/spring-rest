@@ -2,9 +2,14 @@ package com.oci.ws.rest.springrest.resource;
 
 import java.util.List;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import com.oci.ws.rest.springrest.domain.User;
 import com.oci.ws.rest.springrest.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,8 +29,11 @@ public class UserResource
     }
 
     @GetMapping("{id}")
-    public User getUser(@PathVariable Integer id)
+    public EntityModel<User> getUser(@PathVariable Integer id)
     {
-        return service.getUser(id);
+        Link linkToAllUsers = linkTo(methodOn(this.getClass()).getAllUsers()).withRel("all-users");
+        User user = service.getUser(id);
+
+        return EntityModel.of(user, linkToAllUsers);
     }
 }

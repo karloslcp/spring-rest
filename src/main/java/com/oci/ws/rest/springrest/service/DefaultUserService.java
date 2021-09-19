@@ -47,7 +47,7 @@ public class DefaultUserService implements UserService
             String message = messages.getMessage(NOT_FOUND_MESSAGE_FORMAT_PROPERTY, new Object[] { id }, LocaleContextHolder.getLocale());
             throw new UserNotFoundException(message);
         }
-        return null;
+        return user.get();
     }
 
     @Override

@@ -48,7 +48,7 @@ public class UserResource
     }
 
     @PostMapping
-    public ResponseEntity<Object> createUser(@Validated(CreateUserInformation.class) @RequestBody User user)
+    public ResponseEntity<Void> createUser(@Validated(CreateUserInformation.class) @RequestBody User user)
     {
         Integer newUserId = service.createUser(user);
 

@@ -34,7 +34,7 @@ public class DefaultUserService implements UserService
     @Override
     public User get(final Integer id)
     {
-        Optional<User> userOptional = repository.findOne(id);
+        Optional<User> userOptional = repository.findById(id);
         if (userOptional.isEmpty())
         {
             String message = messages.getMessage("user.exception.not-found", new Object[] { id }, LocaleContextHolder.getLocale());
@@ -46,28 +46,30 @@ public class DefaultUserService implements UserService
     @Override
     public Integer add(final User user)
     {
-        return repository.addOne(user);
+        final User createdUser = repository.saveAndFlush(user);
+        return createdUser.getId();
     }
 
     @Override
     public void update(final User user)
     {
-        final var usersUpdated = repository.updateOne(user);
-        if (usersUpdated < 1)
+        if (!repository.existsById(user.getId()))
         {
             String message = messages.getMessage("user.exception.not-found", new Object[] { user.getId() }, LocaleContextHolder.getLocale());
             throw new UserNotFoundException(message);
         }
+        repository.saveAndFlush(user);
     }
 
     @Override
     public void delete(final Integer id)
     {
-        final var usersDeleted = repository.deleteOne(id);
-        if (usersDeleted < 1)
+        if (!repository.existsById(id))
         {
+
             final var message = messages.getMessage("user.exception.not-found", new Object[] { id }, LocaleContextHolder.getLocale());
             throw new UserNotFoundException(message);
         }
+        repository.deleteById(id);
     }
 }
